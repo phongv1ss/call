@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        
+        const firebaseConfig = { 
+            apiKey : "AIzaSyA8wxJd1W4Yk4NIKHO8SaDl6AkGFRocukA" , 
+            authDomain: "callvid-807e1.firebaseapp.com",
+            projectId: "callvid-807e1",
+            storageBucket: "callvid-807e1.appspot.com",
+            messagingSenderId : "117676189102" , 
+            appId : "1:117676189102:web:3679f23b59b6e0f207d43f" , 
+            measurementId : "G-00D5Z3FR4V" 
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+        const githubProvider = new GithubAuthProvider();
+
+        window.loginWithGoogle = async function() {
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+                const token = await user.getIdToken();
+                localStorage.setItem("auth_token", token);
+                console.log("Google login successful", user);
+                window.location.href = "index.html";
+            } catch (error) {
+                console.error("Google login failed", error);
+            }
+        };
+
+    </script>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
+    <div class="bg-white p-8 rounded-2xl shadow-2xl text-center max-w-sm w-full">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">Đăng nhập</h2>
+        <p class="text-gray-500 mb-4">Chọn phương thức đăng nhập</p>
+        
+        <button onclick="loginWithGoogle()" 
+            class="w-full flex items-center justify-center px-6 py-3 mb-3 bg-red-400 text-white font-medium text-lg rounded-lg shadow-lg hover:bg-red-600 transition duration-300">
+            <img src="https://img.icons8.com/?size=100&id=17949&format=png" 
+                 alt="Google Logo" class="w-6 h-6 mr-3">
+            Đăng nhập với Google
+        </button>
+    </div>
+</body>
+</html>
